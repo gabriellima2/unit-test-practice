@@ -46,9 +46,10 @@ export const Form = ({handleSubmit, ...props}: FormProps) => {
           name="username"
           value={usernameTyped}
           handleChange={setUsernameTyped}
+          placeholder="Digite o nome..."
         />
       </fieldset>
-      <DefaultButton type="submit">Adicionar</DefaultButton>
+      <DefaultButton type="submit" title="Adicionar usuário">Adicionar</DefaultButton>
       </form>
   )
 }

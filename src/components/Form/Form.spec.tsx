@@ -1,38 +1,41 @@
-import { fireEvent, screen } from "@testing-library/dom";
+import userEvent from "@testing-library/user-event";
+import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 
 import { renderWithProviders } from "../../utils/test-utils";
-import { addUser } from "../../redux/users/slice";
 import { setupStore } from "../../redux/store";
 
 import { Form } from ".";
+import { act } from "react-dom/test-utils";
+
+const USERNAME = "Gabriel";
+
+const getUsernameInput = () => screen.getByPlaceholderText(/Digite o nome.../);
+const getSubmitButton = () => screen.getByTitle(/Adicionar usuário/);
 
 describe("Form Component", () => {
-  const store = setupStore();
   const handleSubmit = jest.fn();
 
-  let usernameInput: HTMLInputElement;
-  let submitButton: HTMLButtonElement;
-
-  beforeAll(() => {
+  beforeEach(() => {
     renderWithProviders(<Form handleSubmit={handleSubmit} />);
   });
 
   it ("should render", () => {
-    usernameInput = screen.getByDisplayValue("");
-    submitButton = screen.getByText("Adicionar");
-
-    expect(usernameInput).toHaveAttribute("id", "username");
-    expect(submitButton).toBeInTheDocument();
+    expect(getUsernameInput()).toHaveAttribute("id", "username");
+    expect(getSubmitButton()).toBeInTheDocument();
   });
 
-  describe("User interactions in Form", () => {
-    it("should show the username entered", () => {
-      fireEvent.change(usernameInput, {target: {value: "Gabriel"}});
+  describe("User events in Form", () => {
+    it("should show the username typed", async () => {
+      await userEvent.type(getUsernameInput(), USERNAME);
 
-      expect(usernameInput).toHaveValue("Gabriel");
+      expect(screen.getByDisplayValue(USERNAME)).toBeInTheDocument();
     });
 
-    it("should call the submit function", () => {})
+    it("should call the submit function", async () => {
+      await userEvent.click(getSubmitButton());
+
+      expect(handleSubmit).toHaveBeenCalledTimes(1);
+    });
   });
 });
