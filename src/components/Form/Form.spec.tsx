@@ -3,10 +3,8 @@ import { screen } from "@testing-library/dom";
 import "@testing-library/jest-dom";
 
 import { renderWithProviders } from "../../utils/test-utils";
-import { setupStore } from "../../redux/store";
 
 import { Form } from ".";
-import { act } from "react-dom/test-utils";
 
 const USERNAME = "Gabriel";
 
