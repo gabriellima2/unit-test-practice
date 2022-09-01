@@ -24,7 +24,10 @@ const List = () => {
       {users.map((user) => (
         <li key={user.id}>
           <p>{user.name}</p>
-          <DefaultButton handleClick={() => dispatch(removeUser(user.id))}>
+          <DefaultButton
+            title={`Remover ${user.name}`}
+            handleClick={() => dispatch(removeUser(user.id))}
+          >
             Remover
           </DefaultButton>
         </li>

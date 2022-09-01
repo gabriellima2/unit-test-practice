@@ -2,16 +2,17 @@ import { ButtonHTMLAttributes, ReactNode } from "react";
 
 import "./styles.css";
 
-interface DefaultButtonProps extends
-  Pick<ButtonHTMLAttributes<HTMLButtonElement>, "type">  {
+interface DefaultButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>  {
   children: ReactNode;
   handleClick?: (param?: unknown) => void;
 }
 
-export const DefaultButton = (props: DefaultButtonProps) => {
+export const DefaultButton = ({
+  children, handleClick, ...props}: DefaultButtonProps
+  ) => {
   return (
-    <button type={props.type || "button"} onClick={props.handleClick}>
-      {props.children}
+    <button {...props} onClick={handleClick}>
+      {children}
     </button>
   )
 }
