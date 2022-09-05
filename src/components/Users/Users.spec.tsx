@@ -9,13 +9,13 @@ import { addUser } from "../../redux/users/slice";
 
 import { renderWithProviders } from "../../utils/test-utils";
 
-const USERNAME = "Gabriel"
+const USERNAME = "Gabriel";
 
 describe("Users Component", () => {
+  const store = setupStore();
+  store.dispatch(addUser(USERNAME));
+
   beforeEach(() => {
-    const store = setupStore();
-    store.dispatch(addUser(USERNAME));
-  
     renderWithProviders(
     <>
       <Users.Quantity />
@@ -29,11 +29,15 @@ describe("Users Component", () => {
     expect(screen.getByText(/Total de usuários: 1/)).toBeInTheDocument();
   });
 
- /* it("should remove user", () => {
-    const removeButton = screen.getByTitle(`Remover ${USERNAME}`);
-    userEvent.click(removeButton);
+  it("should remove the user when clicking the button", async () => {
+    window.confirm = jest.fn().mockImplementation(() => true);
 
-    expect(screen.getByText(USERNAME)).not.toBeInTheDocument();
+    const removeButton = screen.getByTitle(`Remover ${USERNAME}`);
+    await userEvent.click(removeButton);
+
+    expect(window.confirm).toHaveBeenCalled();
+
+    expect(screen.queryByText(USERNAME)).not.toBeInTheDocument();
     expect(screen.getByText(/Total de usuários: 0/)).toBeInTheDocument();
-  })*/
+  });
 });
